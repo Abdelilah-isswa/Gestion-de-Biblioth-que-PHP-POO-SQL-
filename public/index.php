@@ -47,8 +47,13 @@ switch ($uri) {
         break;
 
     case '/dashboard':
-        (new BookController())->dashboard();
-        break;
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header("Location: /login");
+        exit;
+    }
+    require "../views/books/dashboard.php";
+    break;
 
     /* BORROWS */
     case '/borrow':

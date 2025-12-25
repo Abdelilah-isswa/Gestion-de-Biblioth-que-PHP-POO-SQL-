@@ -2,26 +2,29 @@
 
 class Database
 {
-    private static $host = 'localhost';       // Database host
-    private static $dbName = 'library_db';    // Your database name
-    private static $username = 'root';        // Your MySQL username
-    private static $password = 'alilah396';            // Your MySQL password
     private static $pdo = null;
 
-    public static function getConnection()
+    // 🔧 CHANGE THESE VALUES
+    private static $host = "localhost";
+    private static $dbName = "library_db";   // 👈 YOUR DATABASE NAME
+    private static $username = "root";   // 👈 DB USER
+    private static $password = "alilah396";       // 👈 DB PASSWORD
+
+    public static function connect()
     {
         if (self::$pdo === null) {
-            try {
-                self::$pdo = new PDO(
-                    "mysql:host=" . self::$host . ";dbname=" . self::$dbName . ";charset=utf8",
-                    self::$username,
-                    self::$password
-                );
-                self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $e) {
-                die("Database connection failed: " . $e->getMessage());
-            }
+            self::$pdo = new PDO(
+                "mysql:host=" . self::$host . ";dbname=" . self::$dbName . ";charset=utf8",
+                self::$username,
+                self::$password,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                ]
+            );
         }
+
         return self::$pdo;
     }
 }
+
