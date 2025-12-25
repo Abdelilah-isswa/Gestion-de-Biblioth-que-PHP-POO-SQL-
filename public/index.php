@@ -46,14 +46,24 @@ switch ($uri) {
         (new BookController())->show();
         break;
 
+    case '/books/create':
+        $_SERVER['REQUEST_METHOD'] === 'POST'
+            ? (new BookController())->store()
+            : (new BookController())->createForm();
+        break;
+
+    case '/books/delete':
+        (new BookController())->delete();
+        break;
+
     case '/dashboard':
-    session_start();
-    if (!isset($_SESSION['user'])) {
-        header("Location: /login");
-        exit;
-    }
-    require "../views/books/dashboard.php";
-    break;
+        session_start();
+        if (!isset($_SESSION['user'])) {
+            header("Location: /login");
+            exit;
+        }
+        require "../views/books/dashboard.php";
+        break;
 
     /* BORROWS */
     case '/borrow':

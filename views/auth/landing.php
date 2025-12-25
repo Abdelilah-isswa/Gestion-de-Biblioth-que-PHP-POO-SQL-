@@ -45,7 +45,7 @@
 </head>
 <body>
 
-    <h1>📚 Welcome to the Library</h1>
+    <h1> Welcome to the Library</h1>
     <p>Please login or create an account to continue</p>
 
     <div class="buttons">

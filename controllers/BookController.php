@@ -1,9 +1,80 @@
 <?php
-
+require_once "../models/Book.php";
 class BookController
 {
+
+    // delete a book by admin
+public function delete()
+{
+    session_start();
+
+    if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+        header("Location: /dashboard");
+        exit;
+    }
+
+    if (!isset($_POST['id'])) {
+        header("Location: /books");
+        exit;
+    }
+
+    try {
+        Book::delete($_POST['id']);
+        $_SESSION['success'] = "Book deleted successfully.";
+    } catch (PDOException $e) {
+        $_SESSION['error'] = "Cannot delete book: it has borrow history.";
+    }
+
+    header("Location: /books");
+    exit;
+}
+
+
+
+
+
+    public function createForm()
+    {
+        session_start();
+
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+            header("Location: /dashboard");
+            exit;
+        }
+
+        require "../views/books/create.php";
+    }
+
+    public function store()
+    {
+        session_start();
+
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+            header("Location: /dashboard");
+            exit;
+        }
+
+        $title  = $_POST['title'];
+        $author = $_POST['author'];
+        $year   = $_POST['year'];
+
+        Book::create($title, $author, $year);
+
+        header("Location: /dashboard");
+        exit;
+    }
+
     public function index()
     {
+
+        session_start();
+
+        if (!isset($_SESSION['user'])) {
+            header("Location: /login");
+            exit;
+        }
+
+        $books = Book::all();
         require "../views/books/index.php";
     }
 
