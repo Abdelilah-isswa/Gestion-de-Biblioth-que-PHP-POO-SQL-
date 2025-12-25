@@ -1,3 +1,3 @@
 <?php 
-echo "hi";
-require '../controllers/BookController.php';
+// echo "hi";
+ require '../controllers/BookController.php';
