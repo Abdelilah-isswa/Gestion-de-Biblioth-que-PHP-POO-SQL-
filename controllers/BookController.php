@@ -64,19 +64,31 @@ public function delete()
         exit;
     }
 
-    public function index()
-    {
+public function index()
+{
+    session_start();
 
-        session_start();
-
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login");
-            exit;
-        }
-
-        $books = Book::all();
-        require "../views/books/index.php";
+    if (!isset($_SESSION['user'])) {
+        header("Location: /login");
+        exit;
     }
+
+    $user = $_SESSION['user'];
+
+    // 🎯 ROLE-BASED BOOK LIST
+    if ($user['role'] === 'admin') {
+        $books = Book::getAll();          // admin sees everything
+    } else {
+        $books = Book::getAvailable();   // reader sees only available
+    }
+    ///
+
+    ////
+
+    require "../views/books/index.php";
+}
+
+
 
     public function show()
     {
@@ -87,4 +99,52 @@ public function delete()
     {
         require "../views/books/dashboard.php";
     }
+
+
+    public function edit()
+{
+    session_start();
+
+    if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+        header("Location: /dashboard");
+        exit;
+    }
+
+    if (!isset($_GET['id'])) {
+        header("Location: /books");
+        exit;
+    }
+
+    $book = Book::find($_GET['id']);
+
+    if (!$book) {
+        header("Location: /books");
+        exit;
+    }
+
+    require "../views/books/edit.php";
+}
+
+public function update()
+{
+    session_start();
+
+    if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+        header("Location: /dashboard");
+        exit;
+    }
+
+    Book::update(
+        $_POST['id'],
+        $_POST['title'],
+        $_POST['author'],
+        $_POST['year']
+    );
+
+    $_SESSION['success'] = "Book updated successfully.";
+    header("Location: /books");
+    exit;
+}
+
+
 }

@@ -54,45 +54,58 @@ if (isset($_SESSION['success'])) {
 
 <body>
 
-    <h2>📚 Books List</h2>
+<h2>📚 Books List</h2>
 
-    <table>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Year</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+
+    <?php foreach ($books as $book): ?>
         <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Year</th>
-            <th>Status</th>
-            <?php if ($user['role'] === 'admin'): ?>
-                <th>Actions</th>
-            <?php endif; ?>
-        </tr>
+            <td><?= htmlspecialchars($book['title']) ?></td>
+            <td><?= htmlspecialchars($book['author']) ?></td>
+            <td><?= $book['year'] ?></td>
+            <td><?= $book['status'] ?></td>
 
-        <?php foreach ($books as $book): ?>
-            <tr>
-                <td><?= htmlspecialchars($book['title']) ?></td>
-                <td><?= htmlspecialchars($book['author']) ?></td>
-                <td><?= $book['year'] ?></td>
-                <td><?= $book['status'] ?></td>
-
+            <td>
+                <!-- ADMIN ACTIONS -->
                 <?php if ($user['role'] === 'admin'): ?>
-                    <td>
-                        <a href="#">Edit</a> |
-                        <form method="POST" action="/books/delete" style="display:inline">
-                            <input type="hidden" name="id" value="<?= $book['id'] ?>">
-                            <button type="submit" onclick="return confirm('Delete this book?')">
-                                Delete
-                            </button>
-                        </form>
+                    <a href="/books/edit?id=<?= $book['id'] ?>"> Edit</a>
 
-                    </td>
+                    <form method="POST" action="/books/delete" style="display:inline">
+                        <input type="hidden" name="id" value="<?= $book['id'] ?>">
+                        <button type="submit" onclick="return confirm('Delete this book?')">
+                            🗑 Delete
+                        </button>
+                    </form>
                 <?php endif; ?>
-            </tr>
-        <?php endforeach; ?>
-    </table>
 
-    <br>
-    <a href="/dashboard">← Back to dashboard</a>
+                <!-- READER ACTION -->
+                <?php if ($user['role'] === 'reader' && $book['status'] === 'available'): ?>
+                    <form method="POST" action="/borrows/create" style="display:inline">
+                        <input type="hidden" name="book_id" value="<?= $book['id'] ?>">
+                        <button type="submit">📖 Borrow</button>
+                    </form>
+                <?php endif; ?>
+                <!--  -->
+                
+
+
+
+
+            </td>
+
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<br>
+<a href="/dashboard">← Back to dashboard</a>
 
 </body>
-
 </html>

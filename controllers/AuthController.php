@@ -44,10 +44,63 @@ class AuthController
         exit;
     }
 
-    public function register()
-    {
-        echo "Register logic coming soon";
+  public function register()
+{
+    session_start();
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $firstName = trim($_POST['firstName']);
+        $lastName  = trim($_POST['lastName']);
+        $email     = trim($_POST['email']);
+        $password  = $_POST['password'];
+
+        // ✅ Basic validation
+        if (
+            empty($firstName) ||
+            empty($lastName) ||
+            empty($email) ||
+            empty($password)
+        ) {
+            $error = "All fields are required.";
+            require "../views/auth/register.php";
+            return;
+        }
+
+        // ✅ Email validation
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = "Invalid email address.";
+            require "../views/auth/register.php";
+            return;
+        }
+
+        // ✅ Hash password
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // ✅ Save user
+        $success = User::create([
+            'firstName' => $firstName,
+            'lastName'  => $lastName,
+            'email'     => $email,
+            'password'  => $hashedPassword,
+            'role'      => 'reader'
+        ]);
+
+        if (!$success) {
+            $error = "Email already exists.";
+            require "../views/auth/register.php";
+            return;
+        }
+
+        // ✅ Redirect to login
+        header("Location: /login");
+        exit;
     }
+
+    // GET request → show form
+    require "../views/auth/register.php";
+}
+
 
     public function logout()
     {

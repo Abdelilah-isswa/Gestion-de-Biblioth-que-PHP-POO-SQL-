@@ -8,9 +8,14 @@ require_once "../controllers/BorrowController.php";
 
 /* Get URL */
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
+$u = $_SERVER['REQUEST_URI'];
 /* Remove project folder name (CHANGE if needed) */
 $uri = str_replace('/BRIF_BIBLIO2/public', '', $uri);
+  
+
+
+
+
 
 /* ROUTING */
 switch ($uri) {
@@ -18,10 +23,12 @@ switch ($uri) {
     /* HOME */
     case '/':
         (new AuthController())->landing();
+       
         break;
 
     /* AUTH */
     case '/login':
+     
         $_SERVER['REQUEST_METHOD'] === 'POST'
             ? (new AuthController())->login()
             : (new AuthController())->loginForm();
@@ -56,6 +63,16 @@ switch ($uri) {
         (new BookController())->delete();
         break;
 
+
+    case '/books/edit':
+        (new BookController())->edit();
+        break;
+
+    case '/books/update':
+        (new BookController())->update();
+        break;
+
+
     case '/dashboard':
         session_start();
         if (!isset($_SESSION['user'])) {
@@ -69,10 +86,30 @@ switch ($uri) {
     case '/borrow':
         (new BorrowController())->borrow();
         break;
+    case '/borrows/create':
+    (new BorrowController())->store();
+    break;
+    
 
-    case '/my-borrows':
+    case '/borrows/my':
+        require_once '../controllers/BorrowController.php';
         (new BorrowController())->myBorrows();
         break;
+
+        case '/borrows/return':
+    (new BorrowController())->returnBook();
+    break;
+
+  case '/users/readers':
+    require_once '../controllers/UserController.php';
+    $controller = new UserController();
+    $controller->readers();
+    break;
+case '/borrows/history':
+    require_once '../controllers/BorrowController.php';
+    (new BorrowController())->history();
+    break;
+
 
     /* 404 */
     default:

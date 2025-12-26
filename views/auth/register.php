@@ -59,15 +59,21 @@
 <body>
 
 <div class="register-box">
-    <h2>Sign Up</h2>
+<h2>📝 Register</h2>
 
-    <form method="POST" action="/register">
-        <input type="text" name="name" placeholder="Full Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
+<?php if (!empty($error)): ?>
+    <p style="color:red"><?= $error ?></p>
+<?php endif; ?>
 
-        <button type="submit">Create Account</button>
-    </form>
+<form method="POST" action="/register">
+    <input type="text" name="firstName" placeholder="First name" required><br><br>
+    <input type="text" name="lastName" placeholder="Last name" required><br><br>
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <input type="password" name="password" placeholder="Password" required><br><br>
 
-    <div class="back">
-        <a href="/">← Back to home</a>
+    <button type="submit">Register</button>
+</form>
+
+<br>
+<a href="/login">Already have an account? Login</a>
+

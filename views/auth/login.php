@@ -66,6 +66,23 @@ if (isset($_SESSION['error'])) {
     echo "<p style='color:red'>" . $_SESSION['error'] . "</p>";
     unset($_SESSION['error']);
 }
+
+
+class User1 {
+    public string $name1;
+
+    public function __construct(string $name) {
+        $this->name1 = $name;
+    }
+
+    public function sayHello() {
+        echo "Hello, my name is " . $this->name1;
+    }
+}
+
+$user = new User1("Ahmed");
+$user->sayHello();
+
 ?>
 
     <form method="POST" action="/login">
