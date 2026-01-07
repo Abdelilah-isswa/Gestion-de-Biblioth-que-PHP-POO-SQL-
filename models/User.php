@@ -31,7 +31,7 @@ public static function create($data)
             $data['role']
         ]);
     } catch (PDOException $e) {
-        return false; // email already exists
+        return false; 
     }
 }
 
