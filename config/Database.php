@@ -4,11 +4,11 @@ class Database
 {
     private static $pdo = null;
 
-    // 🔧 CHANGE THESE VALUES
+    
     private static $host = "localhost";
-    private static $dbName = "library_db";   // 👈 YOUR DATABASE NAME
-    private static $username = "root";   // 👈 DB USER
-    private static $password = "alilah396";       // 👈 DB PASSWORD
+    private static $dbName = "library_db";   
+    private static $username = "root";   
+    private static $password = "alilah396";      
 
     public static function connect()
     {
