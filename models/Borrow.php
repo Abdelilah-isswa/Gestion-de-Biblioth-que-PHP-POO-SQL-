@@ -7,14 +7,14 @@ class Borrow
     {
         $pdo = Database::connect();
 
-        // Create borrow record
+        
         $stmt = $pdo->prepare("
             INSERT INTO borrows (readerId, bookId, borrowDate)
             VALUES (?, ?, NOW())
         ");
         $stmt->execute([$readerId, $bookId]);
 
-        // Update book status
+       
         $pdo->prepare("
             UPDATE books SET status = 'borrowed'
             WHERE id = ?
@@ -54,14 +54,14 @@ public static function getByReader($readerId)
 
         if (!$borrow) return;
 
-        // Mark borrow as returned
+        
         $pdo->prepare("
             UPDATE borrows
             SET returnDate = NOW()
             WHERE id = ?
         ")->execute([$borrowId]);
 
-        // Mark book as available again
+      
         $pdo->prepare("
             UPDATE books SET status = 'available'
             WHERE id = ?
