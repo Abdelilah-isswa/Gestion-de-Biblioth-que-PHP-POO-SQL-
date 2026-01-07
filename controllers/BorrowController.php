@@ -6,7 +6,7 @@ class BorrowController
     {
         session_start();
 
-        // 🔐 Reader only
+    
         if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'reader') {
             header("Location: /dashboard");
             exit;
@@ -26,7 +26,7 @@ class BorrowController
 
     public function borrow()
     {
-        // borrow logic
+  
         header("Location: /my-borrows");
         exit;
     }
