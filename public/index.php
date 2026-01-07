@@ -1,15 +1,15 @@
 <?php
 session_start();
 
-/* Load controllers */
+
 require_once "../controllers/AuthController.php";
 require_once "../controllers/BookController.php";
 require_once "../controllers/BorrowController.php";
 
-/* Get URL */
+
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $u = $_SERVER['REQUEST_URI'];
-/* Remove project folder name (CHANGE if needed) */
+
 $uri = str_replace('/BRIF_BIBLIO2/public', '', $uri);
   
 
@@ -17,16 +17,15 @@ $uri = str_replace('/BRIF_BIBLIO2/public', '', $uri);
 
 
 
-/* ROUTING */
+
 switch ($uri) {
 
-    /* HOME */
+
     case '/':
         (new AuthController())->landing();
        
         break;
 
-    /* AUTH */
     case '/login':
      
         $_SERVER['REQUEST_METHOD'] === 'POST'
@@ -44,7 +43,7 @@ switch ($uri) {
         (new AuthController())->logout();
         break;
 
-    /* BOOKS */
+
     case '/books':
         (new BookController())->index();
         break;
@@ -82,7 +81,7 @@ switch ($uri) {
         require "../views/books/dashboard.php";
         break;
 
-    /* BORROWS */
+
     case '/borrow':
         (new BorrowController())->borrow();
         break;
@@ -111,7 +110,6 @@ case '/borrows/history':
     break;
 
 
-    /* 404 */
     default:
         http_response_code(404);
         echo "404 - Page not found";
