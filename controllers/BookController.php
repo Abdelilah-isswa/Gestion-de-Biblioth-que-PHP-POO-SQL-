@@ -3,7 +3,7 @@ require_once "../models/Book.php";
 class BookController
 {
 
-    // delete a book by admin
+
 public function delete()
 {
     session_start();
@@ -75,15 +75,13 @@ public function index()
 
     $user = $_SESSION['user'];
 
-    // 🎯 ROLE-BASED BOOK LIST
+  
     if ($user['role'] === 'admin') {
-        $books = Book::getAll();          // admin sees everything
+        $books = Book::getAll();         
     } else {
-        $books = Book::getAvailable();   // reader sees only available
+        $books = Book::getAvailable();   
     }
-    ///
 
-    ////
 
     require "../views/books/index.php";
 }
