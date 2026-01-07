@@ -53,7 +53,7 @@ class Book
         return $this->status === 'available';
     }
 
-    // ---------- STATIC METHODS (USED BY CONTROLLERS) ----------
+    
 
     public static function getAll()
     {
