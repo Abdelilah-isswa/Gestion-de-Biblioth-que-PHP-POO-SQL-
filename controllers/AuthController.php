@@ -26,7 +26,7 @@ class AuthController
         $user = User::findByEmail($email);
 
         if ($user && password_verify($password, $user['password'])) {
-            // SUCCESS LOGIN
+            
             $_SESSION['user'] = [
                 'id' => $user['id'],
                 'name' => $user['firstName'],
@@ -38,7 +38,7 @@ class AuthController
             exit;
         }
 
-        // FAILED LOGIN
+       
         $_SESSION['error'] = "Invalid email or password";
         header("Location: /login");
         exit;
@@ -55,7 +55,7 @@ class AuthController
         $email     = trim($_POST['email']);
         $password  = $_POST['password'];
 
-        // ✅ Basic validation
+        
         if (
             empty($firstName) ||
             empty($lastName) ||
@@ -67,17 +67,17 @@ class AuthController
             return;
         }
 
-        // ✅ Email validation
+        
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = "Invalid email address.";
             require "../views/auth/register.php";
             return;
         }
 
-        // ✅ Hash password
+        
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // ✅ Save user
+        
         $success = User::create([
             'firstName' => $firstName,
             'lastName'  => $lastName,
@@ -92,12 +92,12 @@ class AuthController
             return;
         }
 
-        // ✅ Redirect to login
+       
         header("Location: /login");
         exit;
     }
 
-    // GET request → show form
+    
     require "../views/auth/register.php";
 }
 
